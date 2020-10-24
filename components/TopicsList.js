@@ -6,6 +6,13 @@ const API_URL =
 
 function TopicsList() {
     const [ topics, setTopics ] = useState([]);
+    const [ addTopic , setAddTopic ] = useState({
+        title: "",
+        upvotes: 0,
+        downvotes: 0,
+        discussedOn: '',
+        id: Date.now(),
+    })
 
     const getTopics = async () => {
         try {
@@ -18,26 +25,54 @@ function TopicsList() {
         }
     }
 
+    function handleArchive(id) {
+        let findTopicsToArchive = topics.find(topic => topic.id === id)
+        findTopicsToArchive.discussedOn = Date.now();
+        setTopics([...topics])
+    }
+
+    function handleDelete(id) {
+        let filterTopicsToDelete = topics.filter(topic => topic.id !== id)
+        setTopics(filterTopicsToDelete);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        setTopics([...topics, addTopic])
+        console.log(topics)
+    }
+
+    function handleInput(e) {
+        e.preventDefault();
+        setAddTopic({
+            ...addTopic, [e.target.name] : e.target.value
+        })
+    }
     useEffect(() => {
         getTopics();
+        
     }, [])
 
     let nextTopics = topics.filter(topic => !topic.discussedOn);
-    // nextTopics = nextTopics.sort((topicA, topicB) => {
-	// 	const ratioA = topicA.upvotes - topicA.downvotes;
-	// 	const ratioB = topicB.upvotes - topicB.downvotes;
-	// 	return ratioB - ratioA;
-    // });
+    nextTopics = nextTopics.sort((topicA, topicB) => {
+		const ratioA = topicA.upvotes - topicA.downvotes;
+		const ratioB = topicB.upvotes - topicB.downvotes;
+		return ratioB - ratioA;
+    });
     
     let previousTopics = topics.filter(topic => topic.discussedOn);
     return (
         <div>
             <h1>Hello World</h1>
+            <form onSubmit={handleSubmit}>
+                <input type="text" name="title" onChange={handleInput}/>
+                <button>Add</button>
+            </form>
             <div>
                 <h4>Next topics</h4>
                 <div className="next--topics">
                     {nextTopics.map(topic => (
-                        <Topic key={topic.id} topic={topic}/>
+                        <Topic handleArchive={handleArchive} key={topic.id + topic.title + topic.upvotes} topic={topic}/>
                     ))}
                 </div>
             </div>
@@ -45,7 +80,7 @@ function TopicsList() {
                 <h4>Past topics</h4>
                 <div className="previous--topics">
                     {previousTopics.map(topic => (
-                        <Topic key={topic.id} topic={topic}/>
+                        <Topic handleDelete={handleDelete} key={topic.id} topic={topic}/>
                     ))}
                 </div>
             </div>

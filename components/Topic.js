@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { archiveSVG, upvoteSVG, downvoteSVG, trashSVG } from './Svgs';
 
 
-function Topic({topic}) {
+function Topic({topic, handleArchive, handleDelete}) {
     
     const [ upVotes, setUpVotes ] = useState([]);
     const [ downVotes, setDownVotes ] = useState([]);
@@ -24,22 +24,24 @@ function Topic({topic}) {
     }
 
 
+
     useEffect(() => {
         UpdateDownVotes()
         UpdateUpVotes()
         UpdateDiscussedOn()
     }, [])
+    
     const discussedOnDate = new Date(Number(discussedOn));
     return (
         <article>
             <div>
                 {!discussedOn 
                 ? 
-                <button onClick={() => setDiscussedOn(discussedOn = Date.now())} className="archive">
+                <button onClick={() => handleArchive(topic.id)} className="archive">
                 {archiveSVG}
                 </button>
                 : 
-                <button className="delete">
+                <button onClick={() => handleDelete(topic.id)} className="delete">
                     {trashSVG}
                 </button>
                 }

@@ -29864,7 +29864,9 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function Topic({
-  topic
+  topic,
+  handleArchive,
+  handleDelete
 }) {
   const [upVotes, setUpVotes] = (0, _react.useState)([]);
   const [downVotes, setDownVotes] = (0, _react.useState)([]);
@@ -29892,9 +29894,10 @@ function Topic({
   }, []);
   const discussedOnDate = new Date(Number(discussedOn));
   return /*#__PURE__*/_react.default.createElement("article", null, /*#__PURE__*/_react.default.createElement("div", null, !discussedOn ? /*#__PURE__*/_react.default.createElement("button", {
-    onClick: () => setDiscussedOn(discussedOn = Date.now()),
+    onClick: () => handleArchive(topic.id),
     className: "archive"
   }, _Svgs.archiveSVG) : /*#__PURE__*/_react.default.createElement("button", {
+    onClick: () => handleDelete(topic.id),
     className: "delete"
   }, _Svgs.trashSVG), /*#__PURE__*/_react.default.createElement("h5", null, topic.title), !discussedOn ? /*#__PURE__*/_react.default.createElement("div", {
     className: "votes"
@@ -29935,6 +29938,13 @@ const API_URL = "https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c7033
 
 function TopicsList() {
   const [topics, setTopics] = (0, _react.useState)([]);
+  const [addTopic, setAddTopic] = (0, _react.useState)({
+    title: "",
+    upvotes: 0,
+    downvotes: 0,
+    discussedOn: '',
+    id: Date.now()
+  });
 
   const getTopics = async () => {
     try {
@@ -29947,24 +29957,56 @@ function TopicsList() {
     }
   };
 
+  function handleArchive(id) {
+    let findTopicsToArchive = topics.find(topic => topic.id === id);
+    findTopicsToArchive.discussedOn = Date.now();
+    setTopics([...topics]);
+  }
+
+  function handleDelete(id) {
+    let filterTopicsToDelete = topics.filter(topic => topic.id !== id);
+    setTopics(filterTopicsToDelete);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setTopics([...topics, addTopic]);
+    console.log(topics);
+  }
+
+  function handleInput(e) {
+    e.preventDefault();
+    setAddTopic({ ...addTopic,
+      [e.target.name]: e.target.value
+    });
+  }
+
   (0, _react.useEffect)(() => {
     getTopics();
   }, []);
-  let nextTopics = topics.filter(topic => !topic.discussedOn); // nextTopics = nextTopics.sort((topicA, topicB) => {
-  // 	const ratioA = topicA.upvotes - topicA.downvotes;
-  // 	const ratioB = topicB.upvotes - topicB.downvotes;
-  // 	return ratioB - ratioA;
-  // });
-
+  let nextTopics = topics.filter(topic => !topic.discussedOn);
+  nextTopics = nextTopics.sort((topicA, topicB) => {
+    const ratioA = topicA.upvotes - topicA.downvotes;
+    const ratioB = topicB.upvotes - topicB.downvotes;
+    return ratioB - ratioA;
+  });
   let previousTopics = topics.filter(topic => topic.discussedOn);
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Hello World"), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Next topics"), /*#__PURE__*/_react.default.createElement("div", {
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Hello World"), /*#__PURE__*/_react.default.createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    type: "text",
+    name: "title",
+    onChange: handleInput
+  }), /*#__PURE__*/_react.default.createElement("button", null, "Add")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Next topics"), /*#__PURE__*/_react.default.createElement("div", {
     className: "next--topics"
   }, nextTopics.map(topic => /*#__PURE__*/_react.default.createElement(_Topic.default, {
-    key: topic.id,
+    handleArchive: handleArchive,
+    key: topic.id + topic.title + topic.upvotes,
     topic: topic
   })))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Past topics"), /*#__PURE__*/_react.default.createElement("div", {
     className: "previous--topics"
   }, previousTopics.map(topic => /*#__PURE__*/_react.default.createElement(_Topic.default, {
+    handleDelete: handleDelete,
     key: topic.id,
     topic: topic
   })))));
@@ -30032,7 +30074,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51592" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65060" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
