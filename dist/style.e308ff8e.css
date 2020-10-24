@@ -1,0 +1,121 @@
+html {
+	font-size: 100%;
+} /*16px*/
+
+body {
+	background-color: #f2f7f5;
+	font-family: 'Inter', sans-serif;
+	font-weight: 400;
+	line-height: 1.65;
+	color: #00473e;
+    max-width: 80%;
+    margin: auto;
+}
+
+p {
+	margin-bottom: 1.15rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	margin: 2.75rem 0 1.05rem;
+	font-family: 'Inter', sans-serif;
+	font-weight: 400;
+	line-height: 1.15;
+}
+
+h1 {
+	font-size: 3.052em;
+	justify-self: center;
+}
+
+h2 {
+	font-size: 2.441em;
+}
+
+h3 {
+	font-size: 1.953em;
+}
+
+h4 {
+    font-size: 1.563em;
+    text-transform: uppercase;
+}
+
+h5 {
+	margin-top: 0.5em;
+	font-size: 1.25em;
+	color: #00473e;
+}
+
+
+.archive {
+	background: none;
+	padding: 0;
+	
+}
+.archive svg {
+    color: #d8779a;
+}
+
+.delete {
+	background: none;
+	padding: 0;
+	
+}
+.delete svg {
+    color: #c4c4c4;
+}
+
+.upvote,
+.downvote {
+	background: #faae2c;
+	border-radius: 50%;
+	padding: 0.8rem;
+}
+.upvote svg, .downvote svg {
+    color: #00473e;
+}
+
+.archive,
+.delete {
+	justify-self: right;
+}
+
+button {
+	border: none;
+	border-radius: 5px;
+	padding: 0.8rem;
+	cursor: pointer;
+}
+
+article {
+    background: white;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+}
+
+article > div {
+    color: #00473e;
+    display: grid;
+    grid-gap: 20px;
+    place-items: center;
+	grid-template-columns: auto;
+    width: 100%;
+}
+
+article p {
+    color: #faae2c;
+}
+.votes {
+    display: flex;
+	gap: 15px;
+	align-items: center;
+	color: #d8779a;
+}
+
+/*# sourceMappingURL=/style.e308ff8e.css.map */

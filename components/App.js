@@ -1,5 +1,5 @@
 import React from 'react'
-import TopicsList from './Topics'
+import TopicsList from './TopicsList'
 
 function App() {
     return (

@@ -29772,7 +29772,82 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"components/Topics.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"components/Svgs.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.trashSVG = exports.downvoteSVG = exports.upvoteSVG = exports.archiveSVG = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const archiveSVG = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  width: "20px",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+}));
+
+exports.archiveSVG = archiveSVG;
+
+const upvoteSVG = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  width: "20px",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+}));
+
+exports.upvoteSVG = upvoteSVG;
+
+const downvoteSVG = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  width: "20px",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"
+}));
+
+exports.downvoteSVG = downvoteSVG;
+
+const trashSVG = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  width: "20px",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+}));
+
+exports.trashSVG = trashSVG;
+},{"react":"node_modules/react/index.js"}],"components/Topic.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29781,6 +29856,76 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
+
+var _Svgs = require("./Svgs");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function Topic({
+  topic
+}) {
+  const [upVotes, setUpVotes] = (0, _react.useState)([]);
+  const [downVotes, setDownVotes] = (0, _react.useState)([]);
+  let [discussedOn, setDiscussedOn] = (0, _react.useState)([]);
+
+  function UpdateDownVotes() {
+    const downVotes = topic.downvotes;
+    setDownVotes(downVotes);
+  }
+
+  function UpdateUpVotes() {
+    const upVotes = topic.upvotes;
+    setUpVotes(upVotes);
+  }
+
+  function UpdateDiscussedOn() {
+    let discussedOn = topic.discussedOn;
+    setDiscussedOn(discussedOn);
+  }
+
+  (0, _react.useEffect)(() => {
+    UpdateDownVotes();
+    UpdateUpVotes();
+    UpdateDiscussedOn();
+  }, []);
+  const discussedOnDate = new Date(Number(discussedOn));
+  return /*#__PURE__*/_react.default.createElement("article", null, /*#__PURE__*/_react.default.createElement("div", null, !discussedOn ? /*#__PURE__*/_react.default.createElement("button", {
+    onClick: () => setDiscussedOn(discussedOn = Date.now()),
+    className: "archive"
+  }, _Svgs.archiveSVG) : /*#__PURE__*/_react.default.createElement("button", {
+    className: "delete"
+  }, _Svgs.trashSVG), /*#__PURE__*/_react.default.createElement("h5", null, topic.title), !discussedOn ? /*#__PURE__*/_react.default.createElement("div", {
+    className: "votes"
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    onClick: () => setUpVotes(upVotes + 1),
+    className: "upvote"
+  }, _Svgs.upvoteSVG), /*#__PURE__*/_react.default.createElement("span", {
+    className: "upvote-number"
+  }, upVotes), /*#__PURE__*/_react.default.createElement("button", {
+    onClick: () => setDownVotes(downVotes + 1),
+    className: "downvote"
+  }, _Svgs.downvoteSVG), /*#__PURE__*/_react.default.createElement("span", {
+    className: "upvote-number"
+  }, downVotes)) : /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", discussedOnDate.toLocaleDateString())));
+}
+
+var _default = Topic;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./Svgs":"components/Svgs.js"}],"components/TopicsList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _Topic = _interopRequireDefault(require("./Topic"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -29804,21 +29949,30 @@ function TopicsList() {
 
   (0, _react.useEffect)(() => {
     getTopics();
-  }, []); // let nextTopics = topics.filter(topic => !topic.discussedOn);
-  // let sortTopics = topics.sort((topicA, topicB) => {
+  }, []);
+  let nextTopics = topics.filter(topic => !topic.discussedOn); // nextTopics = nextTopics.sort((topicA, topicB) => {
   // 	const ratioA = topicA.upvotes - topicA.downvotes;
   // 	const ratioB = topicB.upvotes - topicB.downvotes;
   // 	return ratioB - ratioA;
   // });
 
-  return /*#__PURE__*/_react.default.createElement("div", {
-    className: "topic__card"
-  }, /*#__PURE__*/_react.default.createElement("h1", null, "Hello World"), /*#__PURE__*/_react.default.createElement("ul", null));
+  let previousTopics = topics.filter(topic => topic.discussedOn);
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Hello World"), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Next topics"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "next--topics"
+  }, nextTopics.map(topic => /*#__PURE__*/_react.default.createElement(_Topic.default, {
+    key: topic.id,
+    topic: topic
+  })))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Past topics"), /*#__PURE__*/_react.default.createElement("div", {
+    className: "previous--topics"
+  }, previousTopics.map(topic => /*#__PURE__*/_react.default.createElement(_Topic.default, {
+    key: topic.id,
+    topic: topic
+  })))));
 }
 
 var _default = TopicsList;
 exports.default = _default;
-},{"react":"node_modules/react/index.js"}],"components/App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./Topic":"components/Topic.js"}],"components/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29828,17 +29982,17 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _Topics = _interopRequireDefault(require("./Topics"));
+var _TopicsList = _interopRequireDefault(require("./TopicsList"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App() {
-  return /*#__PURE__*/_react.default.createElement(_Topics.default, null);
+  return /*#__PURE__*/_react.default.createElement(_TopicsList.default, null);
 }
 
 var _default = App;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","./Topics":"components/Topics.js"}],"index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./TopicsList":"components/TopicsList.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -29878,7 +30032,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63749" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51592" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
