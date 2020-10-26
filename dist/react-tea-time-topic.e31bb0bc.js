@@ -29938,13 +29938,7 @@ const API_URL = "https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c7033
 
 function TopicsList() {
   const [topics, setTopics] = (0, _react.useState)([]);
-  const [addTopic, setAddTopic] = (0, _react.useState)({
-    title: "",
-    upvotes: 0,
-    downvotes: 0,
-    discussedOn: '',
-    id: Date.now()
-  });
+  const [addTopic, setAddTopic] = (0, _react.useState)('');
 
   const getTopics = async () => {
     try {
@@ -29970,15 +29964,17 @@ function TopicsList() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setTopics([...topics, addTopic]);
+    const addTopic = {
+      title: addTopic,
+      upvotes: 0,
+      downvotes: 0,
+      discussedOn: '',
+      id: Date.now()
+    };
+    topics.push(addTopic);
+    setTopics([...topics]);
+    setAddTopic('');
     console.log(topics);
-  }
-
-  function handleInput(e) {
-    e.preventDefault();
-    setAddTopic({ ...addTopic,
-      [e.target.name]: e.target.value
-    });
   }
 
   (0, _react.useEffect)(() => {
@@ -29995,13 +29991,16 @@ function TopicsList() {
     onSubmit: handleSubmit
   }, /*#__PURE__*/_react.default.createElement("input", {
     type: "text",
-    name: "title",
-    onChange: handleInput
-  }), /*#__PURE__*/_react.default.createElement("button", null, "Add")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Next topics"), /*#__PURE__*/_react.default.createElement("div", {
+    value: addTopic,
+    onChange: e => setAddTopic(e.target.value),
+    name: "title"
+  }), /*#__PURE__*/_react.default.createElement("button", {
+    type: "submit"
+  }, "Add")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Next topics"), /*#__PURE__*/_react.default.createElement("div", {
     className: "next--topics"
   }, nextTopics.map(topic => /*#__PURE__*/_react.default.createElement(_Topic.default, {
     handleArchive: handleArchive,
-    key: topic.id + topic.title + topic.upvotes,
+    key: topic.id,
     topic: topic
   })))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Past topics"), /*#__PURE__*/_react.default.createElement("div", {
     className: "previous--topics"
@@ -30074,7 +30073,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65060" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54208" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

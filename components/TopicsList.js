@@ -6,13 +6,8 @@ const API_URL =
 
 function TopicsList() {
     const [ topics, setTopics ] = useState([]);
-    const [ addTopic , setAddTopic ] = useState({
-        title: "",
-        upvotes: 0,
-        downvotes: 0,
-        discussedOn: '',
-        id: Date.now(),
-    })
+    const [addTopic, setAddTopic ] = useState('');
+    
 
     const getTopics = async () => {
         try {
@@ -38,16 +33,20 @@ function TopicsList() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        setTopics([...topics, addTopic])
+        const addTopic = {
+            title: addTopic,
+            upvotes: 0,
+            downvotes: 0,
+            discussedOn: '',
+            id: Date.now(),
+        }
+        topics.push(addTopic);
+        setTopics([...topics])
+        setAddTopic('')
         console.log(topics)
     }
 
-    function handleInput(e) {
-        e.preventDefault();
-        setAddTopic({
-            ...addTopic, [e.target.name] : e.target.value
-        })
-    }
+    
     useEffect(() => {
         getTopics();
         
@@ -65,14 +64,14 @@ function TopicsList() {
         <div>
             <h1>Hello World</h1>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="title" onChange={handleInput}/>
-                <button>Add</button>
+                <input type="text" value={addTopic} onChange={(e) => setAddTopic(e.target.value)} name="title"/>
+                <button type="submit">Add</button>
             </form>
             <div>
                 <h4>Next topics</h4>
                 <div className="next--topics">
                     {nextTopics.map(topic => (
-                        <Topic handleArchive={handleArchive} key={topic.id + topic.title + topic.upvotes} topic={topic}/>
+                        <Topic handleArchive={handleArchive} key={topic.id} topic={topic}/>
                     ))}
                 </div>
             </div>

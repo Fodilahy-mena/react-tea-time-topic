@@ -8,7 +8,7 @@ body {
 	font-weight: 400;
 	line-height: 1.65;
 	color: #00473e;
-    max-width: 80%;
+    max-width: 60%;
     margin: auto;
 }
 
@@ -116,4 +116,26 @@ article p {
 	gap: 15px;
 	align-items: center;
 	color: #d8779a;
+}
+
+form {
+	display: flex;
+    justify-content: space-between; 
+    background:white;
+    padding: 16px;
+	border-radius: 5px;
+	max-width: 100%;
+}
+form > input {
+	background-color: #f2f7f5;
+	max-width: 70%;
+	min-width: 70%;
+	border: none;
+	border-radius: 5px;
+}
+
+form > button {
+	background-color:  #faae2c;
+	max-width: 20%;
+	min-width: 20%;
 }
