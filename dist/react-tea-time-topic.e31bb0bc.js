@@ -29937,8 +29937,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 const API_URL = "https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json";
 
 function TopicsList() {
-  const [topics, setTopics] = (0, _react.useState)([]);
-  const [addTopic, setAddTopic] = (0, _react.useState)('');
+  const [topics, setTopics] = (0, _react.useState)([]); // const [addTopic, setAddTopic ] = useState('');
 
   const getTopics = async () => {
     try {
@@ -29964,17 +29963,17 @@ function TopicsList() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    const title = e.target.topic.value;
+    if (!title) return;
     const addTopic = {
-      title: addTopic,
+      title,
       upvotes: 0,
       downvotes: 0,
-      discussedOn: '',
       id: Date.now()
     };
-    topics.push(addTopic);
-    setTopics([...topics]);
-    setAddTopic('');
-    console.log(topics);
+    const newTopicList = [...topics, addTopic];
+    setTopics(newTopicList);
+    e.target.reset();
   }
 
   (0, _react.useEffect)(() => {
@@ -29988,12 +29987,11 @@ function TopicsList() {
   });
   let previousTopics = topics.filter(topic => topic.discussedOn);
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Hello World"), /*#__PURE__*/_react.default.createElement("form", {
-    onSubmit: handleSubmit
+    onSubmit: e => handleSubmit(e)
   }, /*#__PURE__*/_react.default.createElement("input", {
+    required: true,
     type: "text",
-    value: addTopic,
-    onChange: e => setAddTopic(e.target.value),
-    name: "title"
+    name: "topic"
   }), /*#__PURE__*/_react.default.createElement("button", {
     type: "submit"
   }, "Add")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Next topics"), /*#__PURE__*/_react.default.createElement("div", {
@@ -30045,7 +30043,7 @@ var _App = _interopRequireDefault(require("./components/App"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom.default.render( /*#__PURE__*/_react.default.createElement(_App.default, null), document.getElementById('root'));
-},{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./components/App":"components/App.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./components/App":"components/App.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -30073,7 +30071,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54208" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65077" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -30249,5 +30247,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+},{}]},{},["../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
 //# sourceMappingURL=/react-tea-time-topic.e31bb0bc.js.map

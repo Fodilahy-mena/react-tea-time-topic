@@ -6,7 +6,7 @@ const API_URL =
 
 function TopicsList() {
     const [ topics, setTopics ] = useState([]);
-    const [addTopic, setAddTopic ] = useState('');
+    // const [addTopic, setAddTopic ] = useState('');
     
 
     const getTopics = async () => {
@@ -33,17 +33,18 @@ function TopicsList() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const addTopic = {
-            title: addTopic,
-            upvotes: 0,
+        const title = e.target.topic.value;
+        if (!title) return;
+		const addTopic = {
+			title,
+			upvotes: 0,
             downvotes: 0,
-            discussedOn: '',
-            id: Date.now(),
-        }
-        topics.push(addTopic);
-        setTopics([...topics])
-        setAddTopic('')
-        console.log(topics)
+			id: Date.now(),
+		};
+        
+        const newTopicList = [...topics, addTopic];
+		setTopics(newTopicList);
+		e.target.reset();
     }
 
     
@@ -63,8 +64,10 @@ function TopicsList() {
     return (
         <div>
             <h1>Hello World</h1>
-            <form onSubmit={handleSubmit}>
-                <input type="text" value={addTopic} onChange={(e) => setAddTopic(e.target.value)} name="title"/>
+            <form onSubmit={e => handleSubmit(e)}>
+                <input required
+						type="text"
+						name="topic"/>
                 <button type="submit">Add</button>
             </form>
             <div>
