@@ -29866,21 +29866,11 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function Topic({
   topic,
   handleArchive,
-  handleDelete
+  handleDelete,
+  upvoteTopic,
+  downvoteTopic
 }) {
-  const [upVotes, setUpVotes] = (0, _react.useState)([]);
-  const [downVotes, setDownVotes] = (0, _react.useState)([]);
   let [discussedOn, setDiscussedOn] = (0, _react.useState)([]);
-
-  function UpdateDownVotes() {
-    const downVotes = topic.downvotes;
-    setDownVotes(downVotes);
-  }
-
-  function UpdateUpVotes() {
-    const upVotes = topic.upvotes;
-    setUpVotes(upVotes);
-  }
 
   function UpdateDiscussedOn() {
     let discussedOn = topic.discussedOn;
@@ -29888,8 +29878,6 @@ function Topic({
   }
 
   (0, _react.useEffect)(() => {
-    UpdateDownVotes();
-    UpdateUpVotes();
     UpdateDiscussedOn();
   }, []);
   const discussedOnDate = new Date(Number(discussedOn));
@@ -29902,16 +29890,16 @@ function Topic({
   }, _Svgs.trashSVG), /*#__PURE__*/_react.default.createElement("h5", null, topic.title), !discussedOn ? /*#__PURE__*/_react.default.createElement("div", {
     className: "votes"
   }, /*#__PURE__*/_react.default.createElement("button", {
-    onClick: () => setUpVotes(upVotes + 1),
+    onClick: () => upvoteTopic(topic.id),
     className: "upvote"
   }, _Svgs.upvoteSVG), /*#__PURE__*/_react.default.createElement("span", {
     className: "upvote-number"
-  }, upVotes), /*#__PURE__*/_react.default.createElement("button", {
-    onClick: () => setDownVotes(downVotes + 1),
+  }, topic.upvotes), /*#__PURE__*/_react.default.createElement("button", {
+    onClick: () => downvoteTopic(topic.id),
     className: "downvote"
   }, _Svgs.downvoteSVG), /*#__PURE__*/_react.default.createElement("span", {
     className: "upvote-number"
-  }, downVotes)) : /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", discussedOnDate.toLocaleDateString())));
+  }, topic.downvotes)) : /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", discussedOnDate.toLocaleDateString())));
 }
 
 var _default = Topic;
@@ -29937,7 +29925,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 const API_URL = "https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json";
 
 function TopicsList() {
-  const [topics, setTopics] = (0, _react.useState)([]); // const [addTopic, setAddTopic ] = useState('');
+  const [topics, setTopics] = (0, _react.useState)([]);
 
   const getTopics = async () => {
     try {
@@ -29979,14 +29967,43 @@ function TopicsList() {
   (0, _react.useEffect)(() => {
     getTopics();
   }, []);
-  let nextTopics = topics.filter(topic => !topic.discussedOn);
-  nextTopics = nextTopics.sort((topicA, topicB) => {
-    const ratioA = topicA.upvotes - topicA.downvotes;
-    const ratioB = topicB.upvotes - topicB.downvotes;
-    return ratioB - ratioA;
-  });
-  let previousTopics = topics.filter(topic => topic.discussedOn);
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Hello World"), /*#__PURE__*/_react.default.createElement("form", {
+
+  function sortTopic(topicA, topicB) {
+    const rateTopicA = topicA.upvotes - topicA.downvotes;
+    const rateTopicB = topicB.upvotes - topicB.downvotes;
+    return rateTopicB - rateTopicA;
+  }
+
+  let nextTopics = topics.filter(topic => !topic.discussedOn).sort(sortTopic);
+
+  function upvoteTopic(topicId) {
+    const newTopicList = topics.map(topic => {
+      if (topic.id === topicId) {
+        return { ...topic,
+          upvotes: topic.upvotes + 1
+        };
+      }
+
+      return topic;
+    });
+    setTopics(newTopicList);
+  }
+
+  function downvoteTopic(topicId) {
+    const newTopicList = topics.map(topic => {
+      if (topic.id === topicId) {
+        return { ...topic,
+          downvotes: topic.downvotes + 1
+        };
+      }
+
+      return topic;
+    });
+    setTopics(newTopicList);
+  }
+
+  let previousTopics = topics.filter(topic => topic.discussedOn).sort(sortTopic);
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h1", null, "Tea time topic"), /*#__PURE__*/_react.default.createElement("form", {
     onSubmit: e => handleSubmit(e)
   }, /*#__PURE__*/_react.default.createElement("input", {
     required: true,
@@ -29998,6 +30015,8 @@ function TopicsList() {
     className: "next--topics"
   }, nextTopics.map(topic => /*#__PURE__*/_react.default.createElement(_Topic.default, {
     handleArchive: handleArchive,
+    upvoteTopic: upvoteTopic,
+    downvoteTopic: downvoteTopic,
     key: topic.id,
     topic: topic
   })))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h4", null, "Past topics"), /*#__PURE__*/_react.default.createElement("div", {
@@ -30071,7 +30090,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65077" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57983" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

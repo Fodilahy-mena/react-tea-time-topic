@@ -6,8 +6,6 @@ const API_URL =
 
 function TopicsList() {
     const [ topics, setTopics ] = useState([]);
-    // const [addTopic, setAddTopic ] = useState('');
-    
 
     const getTopics = async () => {
         try {
@@ -47,23 +45,50 @@ function TopicsList() {
 		e.target.reset();
     }
 
-    
     useEffect(() => {
         getTopics();
         
     }, [])
 
-    let nextTopics = topics.filter(topic => !topic.discussedOn);
-    nextTopics = nextTopics.sort((topicA, topicB) => {
-		const ratioA = topicA.upvotes - topicA.downvotes;
-		const ratioB = topicB.upvotes - topicB.downvotes;
-		return ratioB - ratioA;
-    });
+    function sortTopic(topicA, topicB) {
+		const rateTopicA = topicA.upvotes - topicA.downvotes;
+		const rateTopicB = topicB.upvotes - topicB.downvotes;
+		return rateTopicB - rateTopicA;
+    }
     
-    let previousTopics = topics.filter(topic => topic.discussedOn);
+    let nextTopics = topics.filter(topic => !topic.discussedOn).sort(sortTopic);
+    
+
+    function upvoteTopic(topicId) {
+		const newTopicList = topics.map(topic => {
+			if (topic.id === topicId) {
+				return {
+					...topic,
+					upvotes: topic.upvotes + 1,
+				};
+			}
+			return topic;
+		});
+		setTopics(newTopicList);
+    }
+    
+    function downvoteTopic(topicId) {
+		const newTopicList = topics.map(topic => {
+			if (topic.id === topicId) {
+				return {
+					...topic,
+					downvotes: topic.downvotes + 1,
+				};
+			}
+			return topic;
+		});
+		setTopics(newTopicList);
+	}
+    
+    let previousTopics = topics.filter(topic => topic.discussedOn).sort(sortTopic);
     return (
         <div>
-            <h1>Hello World</h1>
+            <h1>Tea time topic</h1>
             <form onSubmit={e => handleSubmit(e)}>
                 <input required
 						type="text"
@@ -74,7 +99,7 @@ function TopicsList() {
                 <h4>Next topics</h4>
                 <div className="next--topics">
                     {nextTopics.map(topic => (
-                        <Topic handleArchive={handleArchive} key={topic.id} topic={topic}/>
+                        <Topic handleArchive={handleArchive} upvoteTopic={upvoteTopic} downvoteTopic={downvoteTopic} key={topic.id} topic={topic}/>
                     ))}
                 </div>
             </div>

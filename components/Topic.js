@@ -2,32 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { archiveSVG, upvoteSVG, downvoteSVG, trashSVG } from './Svgs';
 
 
-function Topic({topic, handleArchive, handleDelete}) {
+function Topic({topic, handleArchive, handleDelete, upvoteTopic, downvoteTopic}) {
     
-    const [ upVotes, setUpVotes ] = useState([]);
-    const [ downVotes, setDownVotes ] = useState([]);
     let [ discussedOn, setDiscussedOn] = useState([]);
-
-    function UpdateDownVotes() {
-        const downVotes = topic.downvotes;
-        setDownVotes(downVotes)
-    }
-
-    function UpdateUpVotes() {
-        const upVotes = topic.upvotes;
-        setUpVotes(upVotes)
-    }
 
     function UpdateDiscussedOn() {
         let discussedOn = topic.discussedOn;
         setDiscussedOn(discussedOn)
     }
 
-
-
     useEffect(() => {
-        UpdateDownVotes()
-        UpdateUpVotes()
         UpdateDiscussedOn()
     }, [])
     
@@ -49,14 +33,14 @@ function Topic({topic, handleArchive, handleDelete}) {
                 {!discussedOn 
                 ? 
                 <div className="votes">
-                    <button onClick={() => setUpVotes(upVotes + 1)}  className="upvote">
+                    <button onClick={() => upvoteTopic(topic.id)}  className="upvote">
                         {upvoteSVG}
                     </button>
-                    <span className="upvote-number">{upVotes}</span>
-                    <button onClick={() => setDownVotes(downVotes + 1)} className="downvote">
+                    <span className="upvote-number">{topic.upvotes}</span>
+                    <button onClick={() => downvoteTopic(topic.id)} className="downvote">
                         {downvoteSVG}
                     </button>
-                    <span className="upvote-number">{downVotes}</span>
+                    <span className="upvote-number">{topic.downvotes}</span>
                 </div>
                 : 
                 <p>Discussed on {discussedOnDate.toLocaleDateString()}</p>

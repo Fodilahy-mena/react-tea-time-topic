@@ -140,4 +140,20 @@ form > button {
 	min-width: 20%;
 }
 
+hr {
+    max-width: 100%;
+    min-width: 100%;
+    margin: auto;
+	margin-top: 2rem;
+}
+footer {
+    max-width: 100%;
+    min-width: 100%;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    opacity: .5;
+
+}
+
 /*# sourceMappingURL=/style.e308ff8e.css.map */
